@@ -1,0 +1,68 @@
+{
+  "properties": {
+    "displayName": "Add a guid tag to resources",
+    "policyType": "Custom",
+    "mode": "All",
+    "policyRule": {
+      "if": {
+        "allof": [
+          {
+            "field": "[concat('tags[', parameters('tagName'), ']')]",
+            "exists": "false"
+          }
+        ]
+      },
+      "then": {
+        "effect": "deployIfNotExists",
+        "details": {
+          "type": "Microsoft.Resources/resourceGroups",
+          "name": "current",
+          "roleDefinitionIds": [
+            "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+          ],
+          "deployment": {
+            "properties": {
+              "mode": "incremental",
+              "parameters": {},
+              "template": {
+                "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+                "contentVersion": "1.0.0.0",
+                "parameters": {
+                  "_CurrentDateTimeInTicks": {
+                    "type": "string",
+                    "minLength": 18,
+                    "maxLength": 18
+                  }
+                },
+                "variables": {
+                  "UniqueStringBasedOnTimeStamp": "[uniqueString(deployment().name, parameters('_CurrentDateTimeInTicks'))]"
+                },
+                "resources": [
+                  {
+                    "apiVersion": "2019-10-01",
+                    "type": "Microsoft.Resources/resourceGroups",
+                    "name": "[resourcegroup().name]",
+                    "location": "[resourcegroup().location]",
+                    "tags": {
+                      "guid": "[guid(variables('UniqueStringBasedOnTimeStamp'))]"
+                    },
+                    "properties": {}
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "displayName": "Tag name",
+          "description": "Name of the tag to enforce"
+        }
+      }
+    }
+  }
+}
