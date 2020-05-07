@@ -4,7 +4,7 @@ Add a guid tag to resources
 
 ## Try on Portal
 
-[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#blade/Microsoft_Azure_Policy/CreatePolicyDefinitionBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsegraef%2FguidPolicy%2Fazurepolicy.json)
+[![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://portal.azure.com/#blade/Microsoft_Azure_Policy/CreatePolicyDefinitionBlade/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fsegraef%2FguidPolicy%2Fmaster%2Fazurepolicy.json)
 
 ## Try with PowerShell
 
@@ -26,3 +26,4 @@ az policy definition create --name 'add-guid-tag' --display-name 'Add a guid tag
 az policy assignment create --name <assignmentname> --scope <scope> --policy "add-guid-tag" --params "{'tagName':{'value': 'guid'}}"
 
 ````
+
